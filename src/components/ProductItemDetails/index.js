@@ -24,6 +24,7 @@ const apiStatusConstants = {
 class ProductItemDetails extends Component {
   state = {
     eachProductTitle: [],
+    normalProducts: [],
     plusData: 1,
     apiStatus: apiStatusConstants.initial,
     showSubmitError: false,
@@ -68,6 +69,19 @@ class ProductItemDetails extends Component {
     const dataOne = await response.json()
 
     if (response.ok === true) {
+       const updatedDataoOne = dataOne.map(eachData => ({
+        availability: eachData.availability,
+        brand: eachData.brand,
+        description: eachData.description,
+        id: eachData.id,
+        imageUrl: eachData.image_url,
+        price: eachData.price,
+        rating: eachData.rating,
+        style: eachData.style,
+        title: eachData.title,
+        totalReviews: eachData.total_reviews,
+      }))
+      
       const updatedData = dataOne.similar_products.map(eachProduct => ({
         availability: eachProduct.availability,
         brand: eachProduct.brand,
@@ -80,9 +94,10 @@ class ProductItemDetails extends Component {
         title: eachProduct.title,
         totalReviews: eachProduct.total_reviews,
       }))
-      this.setState({
+     this.setState({
         eachProductTitle: updatedData,
         apiStatus: apiStatusConstants.success,
+        normalProducts: updatedDataoOne,
       })
     }
     if (response.status === 404) {
